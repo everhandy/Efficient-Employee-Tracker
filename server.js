@@ -76,12 +76,15 @@ function startApp() {
 };
 
 function viewAll(choice) {
-      db.query(`Select * FROM ${choice}`, (err, res) => {
-            if (err) throw err;
-            console.log(res);
-            startApp();
-      })
-};
+    db.query(`SELECT * FROM ${choice}`, (err, res) => {
+      if (err) throw err;
+        // displaying chosen data in table format
+      console.log(`\nDisplaying ${choice} Table:\n`);
+      console.table(res);
+      startApp();
+    });
+  }
+  
   
 function addEmployee() {
       inquirer
@@ -105,7 +108,8 @@ function addEmployee() {
               name: "manager_id",
               type: "input",
               message: "Enter employee's manager ID (or leave blank if none):",
-              default: null, // Set default to null
+              // Set default to null and add filter to allow blank response to mean null but still allows manager id input
+              default: null, 
               filter: (input) => (input === '' ? null : input),
           },
       ])
